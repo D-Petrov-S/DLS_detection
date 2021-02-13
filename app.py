@@ -8,16 +8,11 @@ from yolo_detection_images import runModel
 
 app = Flask(__name__)
 
-
 @app.route('/detectObject' , methods=['POST'])
 def mask_image():
 	file = request.files['image'].read() 
 	npimg = np.fromstring(file, np.uint8)
 	img = cv2.imdecode(npimg,cv2.IMREAD_COLOR)
-
-
-
-
 
 	img = runModel(img)
 
@@ -28,8 +23,6 @@ def mask_image():
 	img_base64 = base64.b64encode(rawBytes.read())
 	return jsonify({'status':str(img_base64)})
 
-
-
 @app.route('/test' , methods=['GET','POST'])
 def test():
 	print("log: got at test" , file=sys.stderr)
@@ -38,7 +31,6 @@ def test():
 @app.route('/')
 def home():
 	return render_template('./index.html')
-
 	
 @app.after_request
 def after_request(response):
@@ -47,7 +39,6 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
-
 
 if __name__ == '__main__':
 	app.run(debug = True)
